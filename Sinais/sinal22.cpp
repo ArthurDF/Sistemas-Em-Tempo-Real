@@ -1,0 +1,37 @@
+#include <signal.h> // definição dos sinais de interrupções
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h> // system()
+
+int cont=0;
+
+void funcao2(int sig)
+{
+    system("clear");
+    printf("Ah, Ah, Ah-  Eu não morro com : %d \n", sig);
+    printf("Pelo menos, da segunda. Tente de novo..\n\n\n");
+    signal(SIGINT, SIG_DFL);
+}
+
+void funcao1(int sig)
+{
+    cont++;
+    system("clear");
+    printf("Ah, Ah, Ah-  Eu não morro com : %d \n", sig);
+    printf("Pelo menos, da primeira vez. Tente de novo..\n\n\n");
+    if(cont==2)
+        signal(SIGINT, SIG_DFL);
+}
+
+int main()
+{
+    (void)signal(SIGINT, funcao1); // SIGINT - Terminal Interrupt
+
+    while (1)
+    {
+        printf("Olá, Mundo Cruel! Vou dormir por  1 segundo.\n");
+        printf("Tente me matar com Ctrl-C.\n");
+        sleep(1);
+    }
+    // exit(0);
+}
